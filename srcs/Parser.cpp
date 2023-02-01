@@ -1,16 +1,17 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Conf.cpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rofernan <rofernan@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/23 12:49:31 by rofernan          #+#    #+#             */
-/*   Updated: 2020/10/23 12:49:34 by rofernan         ###   ########.fr       */
-/*                                                                            */
+/*																																						*/
+/*																												:::		  ::::::::   */
+/*   Conf.cpp																				   :+:		  :+:		:+:   */
+/*																										+:+ +:+				 +:+		 */
+/*   By: rofernan <rofernan@student.42.fr>				  +#+  +:+		   +#+				*/
+/*																								+#+#+#+#+#+   +#+				   */
+/*   Created: 2020/10/23 12:49:31 by rofernan				  #+#		#+#						 */
+/*   Updated: 2020/10/23 12:49:34 by rofernan				 ###   ########.fr		   */
+/*																																						*/
 /* ************************************************************************** */
 
-# include "../inc/Parser.hpp"
+# include "Parser.hpp"
+# include "Utils.hpp"
 
 Conf::Conf() {}
 
@@ -53,23 +54,23 @@ std::string	Conf::parseLocation(Server *serv, std::string locs) {
 		end = locs.find("}");
 		location = locs.substr(beg, end + 1 - beg);
 		if (ft::countElem(location, "\troot ") != 1)
-			return ("in server port " + std::to_string(serv->port) + ": parameter root must be present once.");
+			return ("in server port " + ft::to_string(serv->port) + ": parameter root must be present once.");
 		if (ft::countElem(location, "\tindex ") > 1)
-			return ("in server port " + std::to_string(serv->port) + ": parameter index must be present max once.");
+			return ("in server port " + ft::to_string(serv->port) + ": parameter index must be present max once.");
 		if (ft::countElem(location, "\tmethod ") != 1)
-			return ("in server port " + std::to_string(serv->port) + ": parameter method must be present once.");
+			return ("in server port " + ft::to_string(serv->port) + ": parameter method must be present once.");
 		if (ft::countElem(location, "\tauth ") > 1)
-			return ("in server port " + std::to_string(serv->port) + ": parameter auth must be present max once.");
+			return ("in server port " + ft::to_string(serv->port) + ": parameter auth must be present max once.");
 		if (ft::countElem(location, "\tmax_body ") > 1)
-			return ("in server port " + std::to_string(serv->port) + ": parameter max_body must be present max once.");
+			return ("in server port " + ft::to_string(serv->port) + ": parameter max_body must be present max once.");
 		if (ft::countElem(location, "\tautoindex ") > 1)
-			return ("in server port " + std::to_string(serv->port) + ": parameter autoindex must be present max once.");
+			return ("in server port " + ft::to_string(serv->port) + ": parameter autoindex must be present max once.");
 		if (ft::countElem(location, "\tphp ") > 1)
-			return ("in server port " + std::to_string(serv->port) + ": parameter php must be present max once.");
+			return ("in server port " + ft::to_string(serv->port) + ": parameter php must be present max once.");
 		if (ft::countElem(location, "\tcgi ") > 1)
-			return ("in server port " + std::to_string(serv->port) + ": parameter cgi must be present max once.");
+			return ("in server port " + ft::to_string(serv->port) + ": parameter cgi must be present max once.");
 		if (ft::countElem(location, "\text ") > 1)
-			return ("in server port " + std::to_string(serv->port) + ": parameter ext must be present max once.");
+			return ("in server port " + ft::to_string(serv->port) + ": parameter ext must be present max once.");
 		locBlock = ft::split(location, '\n');
 		for (size_t i = 0; i < locBlock.size(); i++)
 		{
@@ -79,18 +80,18 @@ std::string	Conf::parseLocation(Server *serv, std::string locs) {
 				if (line[0] == "location")
 				{
 					if (line.size() != 3 || line[1][0] != '/' || line[2] != "{")
-						return ("in server port " + std::to_string(serv->port) + ": location syntax.");
+						return ("in server port " + ft::to_string(serv->port) + ": location syntax.");
 					uri = line[1];
 				}
 				else if (line[0] == "root")
 				{
 					if (line.size() != 2)
-						return ("in server port " + std::to_string(serv->port) + ": root syntax.");
+						return ("in server port " + ft::to_string(serv->port) + ": root syntax.");
 					DIR *dir;
 					if (!(dir = opendir(line[1].c_str())))
 					{
 						closedir(dir);
-						return ("in server port " + std::to_string(serv->port) + ": cannot find root path.");
+						return ("in server port " + ft::to_string(serv->port) + ": cannot find root path.");
 					}
 					closedir(dir);
 					root = line[1];
@@ -98,64 +99,64 @@ std::string	Conf::parseLocation(Server *serv, std::string locs) {
 				else if (line[0] == "index")
 				{
 					if (line.size() != 2)
-						return ("in server port " + std::to_string(serv->port) + ": index syntax.");
+						return ("in server port " + ft::to_string(serv->port) + ": index syntax.");
 					index = line[1];
 				}
 				else if (line[0] == "method")
 				{
 					if (line.size() != 2)
-						return ("in server port " + std::to_string(serv->port) + ": method syntax.");
+						return ("in server port " + ft::to_string(serv->port) + ": method syntax.");
 					methods = line[1];
 				}
 				else if (line[0] == "auth")
 				{
 					if (line.size() != 2)
-						return ("in server port " + std::to_string(serv->port) + ": auth syntax.");
+						return ("in server port " + ft::to_string(serv->port) + ": auth syntax.");
 					auth = line[1];
 				}
 				else if (line[0] == "cgi")
 				{
 					if (line.size() != 2)
-						return ("in server port " + std::to_string(serv->port) + ": cgi syntax.");
+						return ("in server port " + ft::to_string(serv->port) + ": cgi syntax.");
 					cgi = line[1];
 				}
 				else if (line[0] == "php")
 				{
 					if (line.size() != 2)
-						return ("in server port " + std::to_string(serv->port) + ": php syntax.");
+						return ("in server port " + ft::to_string(serv->port) + ": php syntax.");
 					phpcgi = line[1];
 				}
 				else if (line[0] == "ext")
 				{
 					if (line.size() != 2)
-						return ("in server port " + std::to_string(serv->port) + ": ext syntax.");
+						return ("in server port " + ft::to_string(serv->port) + ": ext syntax.");
 					ext = line[1];
 				}
 				else if (line[0] == "max_body")
 				{
 					if (line.size() != 2 || !ft::isNumber(line[1]))
-						return ("in server port " + std::to_string(serv->port) + ": max_body syntax.");
-					max_body = std::stoi(line[1]);
+						return ("in server port " + ft::to_string(serv->port) + ": max_body syntax.");
+					max_body = *line[1].c_str();
 				}
 				else if (line[0] == "autoindex")
 				{
 					if (line.size() != 2 || (line[1] != "on" && line[1] != "off"))
-						return ("in server port " + std::to_string(serv->port) + ": autoindex syntax.");
+						return ("in server port " + ft::to_string(serv->port) + ": autoindex syntax.");
 					if (line[1] == "on")
 						autoindex = true;
 				}
 				else if (line[0] != "}")
-					return ("in server port " + std::to_string(serv->port) + ": unknown parameter.");
+					return ("in server port " + ft::to_string(serv->port) + ": unknown parameter.");
 			}
 			if (autoindex == true && !index.empty())
-				return ("in server port " + std::to_string(serv->port) + ": index must be asbent if autoindex is on.");
+				return ("in server port " + ft::to_string(serv->port) + ": index must be asbent if autoindex is on.");
 			line.clear();
 		}
 		locBlock.clear();
 		Location *loc = new Location(uri, root, index, methods, max_body, auth, cgi, phpcgi, ext, autoindex);
 		serv->locations.push_back(loc);
 		locs.erase(0, end + 1);
-		NOCLASSLOGPRINT(INFO, ("Conf::parseLocation() | uri: " + uri + " | root: " + root + " | index: " + index + " | methods: " + methods + " | max_body: " + std::to_string(max_body) + " | auth: " + auth + " | cgi: " + cgi + " | php: " + phpcgi + " | ext: " + ext + " | autoindex: " + std::to_string(autoindex)));
+		NOCLASSLOGPRINT(INFO, ("Conf::parseLocation() | uri: " + uri + " | root: " + root + " | index: " + index + " | methods: " + methods + " | max_body: " + ft::to_string(max_body) + " | auth: " + auth + " | cgi: " + cgi + " | php: " + phpcgi + " | ext: " + ext + " | autoindex: " + ft::to_string(autoindex)));
 		uri.clear();
 		root.clear();
 		index.clear();
@@ -202,7 +203,7 @@ std::string	Conf::parseServerBlock(std::string block)
 		{
 			if (line.size() != 2 || !ft::isNumber(line[1]))
 				return ("port syntax.");
-			port = std::stoi(line[1]);
+			port = *line[1].c_str();
 			if (port <= 1024)
 				return ("port must be over 1024.");
 		}
@@ -229,9 +230,9 @@ std::string	Conf::parseServerBlock(std::string block)
 	serverBlock.clear();
 	servParams = block.substr(idx, block.size() - idx - 1);
 	if (serverName == "")
-		serverName = "webserv" + std::to_string(nameNb++);
+		serverName = "webserv" + ft::to_string(nameNb++);
 	Server *serv = new Server(port, serverName, error);
-	NOCLASSLOGPRINT(INFO, ("Conf::parseServerBlock() : FOR SERVER PORT " + std::to_string(port)));
+	NOCLASSLOGPRINT(INFO, ("Conf::parseServerBlock() : FOR SERVER PORT " + ft::to_string(port)));
 	if ((_errMsg = parseLocation(serv, servParams)) != "0")
 	{
 		for (std::vector<Location*>::iterator itl = serv->locations.begin(); itl != serv->locations.end(); itl++)
@@ -244,18 +245,18 @@ std::string	Conf::parseServerBlock(std::string block)
 	}
 	try
 	{
-        serv->start();
+				serv->start();
 	}
 	catch (std::exception &e)
 	{
-        std::cerr << e.what() << std::endl;
-    }
+				std::cerr << e.what() << std::endl;
+		}
 	_servers.push_back(serv);
 	for (size_t i = 0; i < _servers.size() - 1; i++) {
 		if (_servers[i]->port == _servers[_servers.size() - 1]->port)
 			return ("each server must have a different port.");
 	}
-	NOCLASSLOGPRINT(INFO, ("Server::parseServerBlock() : SERVER CREATED PORT(" + std::to_string(port) + "), NAME(" + serverName + "), ERROR_PATH(" + error + ")"));
+	NOCLASSLOGPRINT(INFO, ("Server::parseServerBlock() : SERVER CREATED PORT(" + ft::to_string(port) + "), NAME(" + serverName + "), ERROR_PATH(" + error + ")"));
 	return ("0");
 }
 
@@ -345,7 +346,7 @@ void	Conf::parseConf(void)
 }
 
 /* **************************************************** */
-/*                     EXCEPTIONS     		            */
+/*										 EXCEPTIONS		 								*/
 /* **************************************************** */
 
 std::vector<Server*>	Conf::getServers(void)

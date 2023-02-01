@@ -1,4 +1,4 @@
-# include "../inc/Webserv.hpp"
+# include "main.hpp"
 
 Client::Client(int acceptFd, Server *server, struct sockaddr_in clientAddr): acceptFd(acceptFd), server(server), req(this), res(this) {
     
@@ -53,6 +53,6 @@ void Client::resetTimeOut(void) {
 
 std::string const Client::logInfo(void) {
     std::string ret;
-    ret = "Client | Connected to port " + std::to_string(this->server->port) + " from port " + std::to_string(this->port) + " | recvStatus : " +  std::to_string(this->recvStatus) + " | isConnected : " +  std::to_string(this->isConnected) ;
+    ret = "Client | Connected to port " + ft::to_string(this->server->port) + " from port " + ft::to_string(this->port) + " | recvStatus : " +  ft::to_string(this->recvStatus) + " | isConnected : " +  ft::to_string(this->isConnected) ;
     return (ret);
 }

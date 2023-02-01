@@ -1,7 +1,7 @@
 #ifndef UTILS_HPP
 # define UTILS_HPP
 
-# include "Webserv.hpp"
+# include "main.hpp"
 
 namespace ft
 {
@@ -21,7 +21,8 @@ namespace ft
 	int							countElem(std::string str, std::string target);
 	std::string 				getcwdString();
     int             			putstrError(std::string str);
-	int						ft_strstr(char *str, std::string search, int size);
+	int							ft_strstr(char *str, std::string search, int size);
+	std::string					to_string(int num);
 
 }
 

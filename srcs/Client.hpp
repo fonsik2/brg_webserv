@@ -23,7 +23,7 @@
 
 # define TUBE_OUT 0
 # define TUBE_IN 1
-
+#include <sstream>
 
 class Server;
 

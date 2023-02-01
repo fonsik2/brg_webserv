@@ -13,7 +13,7 @@ _END		=	\e[0m
 # VARIABLES
 
 NAME = webserv
-CC = clang++ -Wall -Wextra -Werror # -g3 -fsanitize=address
+CC = c++ -Wall -Wextra -Werror -std=c++98 # -g3 -fsanitize=address
 RM = rm -rf
 
 # DIRECTORIES
@@ -23,7 +23,7 @@ DSRCS	= ./srcs/
 DOBJS	= ./comp/
 
 
-HEADERS = ./inc/*
+HEADERS = ./srcs/
 # SOURCES
 
 SRCS = main.cpp Parser.cpp Config.cpp Server.cpp Client.cpp Request.cpp Response.cpp Utils.cpp Methods.cpp CGI.cpp

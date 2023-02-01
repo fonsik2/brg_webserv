@@ -1,7 +1,7 @@
 #ifndef WEBSERV_HPP
 # define WEBSERV_HPP
 
-# include <stdlib.h>
+# include <cstdlib>
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -9,11 +9,11 @@
 # include <sys/wait.h>
 # include <sys/time.h>
 # include <sys/resource.h>
-# include <signal.h>
+# include <csignal>
 # include <dirent.h>
-# include <string.h>
-# include <errno.h>
-# include <time.h>
+# include <cstring>
+# include <cerrno>
+# include <ctime>
 # include <sys/select.h>
 # include <sys/socket.h>
 # include <netinet/in.h>

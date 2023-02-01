@@ -1,4 +1,4 @@
-# include "../inc/Webserv.hpp"
+# include "main.hpp"
 
 void showCGIEnv(std::map<std::string, std::string> & envmap) {
 
@@ -51,7 +51,7 @@ char ** Response::buildCGIEnv(Request * req) {
 	envmap["REMOTE_ADDR"]         = req->client->ip;
 	envmap["PATH_INFO"]           = req->uri;
     envmap["PATH_TRANSLATED"]     = ft::getcwdString() + req->reqLocation->root.substr(1, req->reqLocation->root.size()) + req->uri.substr(req->uri.find("/" + req->isolateFileName));
-    envmap["CONTENT_LENGTH"]      = std::to_string(req->_reqBody.size());
+    envmap["CONTENT_LENGTH"]      = ft::to_string(req->_reqBody.size());
 	envmap["QUERY_STRING"]        = req->uriQueries.empty() ? "" : req->uriQueries;
 	if (!req->contentType.empty()) envmap["CONTENT_TYPE"] = req->contentType;
     envmap["SCRIPT_NAME"]         = getCGIType(req) == TESTER_CGI ? req->reqLocation->cgi : req->reqLocation->php;
@@ -60,7 +60,7 @@ char ** Response::buildCGIEnv(Request * req) {
  //   }
 
 	envmap["SERVER_NAME"]         = "127.0.0.1";
-	envmap["SERVER_PORT"]         = std::to_string(req->client->server->port);
+	envmap["SERVER_PORT"]         = ft::to_string(req->client->server->port);
     if (!req->authorization.empty()) {
 		pos = req->authorization.find(" ");
         if (pos != std::string::npos) {
@@ -166,13 +166,13 @@ void Response::execCGI(Request * req) {
         if (req->method == "POST") {
             wRet = write(tubes[SIDE_IN], req->_reqBody.c_str(), req->_reqBody.size());
             if (wRet <= 0)
-                LOGPRINT(INFO, this, ("Response::execCGI() : Writing Body into STDIN child has return wRet = " + std::to_string(wRet)));
+                LOGPRINT(INFO, this, ("Response::execCGI() : Writing Body into STDIN child has return wRet = " + ft::to_string(wRet)));
             close(tubes[SIDE_IN]);
         }
         waitpid(pid, &status, 0);
         if (WIFEXITED(status)) {
             ret = WEXITSTATUS(status);
-            LOGPRINT(INFO, this, ("Request::execCGI() : execve() with CGI has succeed and returned : " + std::to_string(ret)));
+            LOGPRINT(INFO, this, ("Request::execCGI() : execve() with CGI has succeed and returned : " + ft::to_string(ret)));
         } else {
             LOGPRINT(LOGERROR, this, ("Request::execCGI() : execve() with CGI has failed an return -1 - Internal Error 500"));
             setErrorParameters(Response::ERROR, INTERNAL_ERROR_500);
@@ -204,7 +204,7 @@ void Response::handleCGIOutput(int cgiType) {
     close(cgiFdOutput);
     _cgiOutputBody = buffer;
     if (_cgiOutputBody.find("\r\n\r\n") == std::string::npos) {
-        LOGPRINT(LOGERROR, this, ("Response::handleCGIOutput() : CGI (type : " + std::to_string(cgiType) + ") output doesn't contain <CR><LR><CR><LR> pattern. Invalid CGI. Internal Error"));
+        LOGPRINT(LOGERROR, this, ("Response::handleCGIOutput() : CGI (type : " + ft::to_string(cgiType) + ") output doesn't contain <CR><LR><CR><LR> pattern. Invalid CGI. Internal Error"));
         return setErrorParameters(Response::ERROR, INTERNAL_ERROR_500);
     } else parseCGIOutput(cgiType, buffer);
     unlink(CGI_OUTPUT_TMPFILE);
@@ -212,7 +212,6 @@ void Response::handleCGIOutput(int cgiType) {
     _cgiOutputBody.clear();
 
 }
-
 void Response::parseCGIOutput(int cgiType, std::string & buffer) {
 
     size_t pos;
@@ -228,7 +227,7 @@ void Response::parseCGIOutput(int cgiType, std::string & buffer) {
         pos += 8;
         endLine = headersSection.find("\r", pos);
         if (endLine == std::string::npos) endLine = headersSection.find("\n", pos);
-        _statusCode = std::stoi(headersSection.substr(pos, endLine));
+        _statusCode = std::atoi(headersSection.substr(pos, endLine).c_str());
     }
     pos = headersSection.find("Content-Type");
     if (pos == std::string::npos) pos = headersSection.find("Content-type");

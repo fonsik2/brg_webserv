@@ -1,4 +1,4 @@
-#include "../inc/Webserv.hpp"
+#include "main.hpp"
 
 Config gConfig;
 

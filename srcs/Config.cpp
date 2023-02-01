@@ -1,4 +1,4 @@
-#include "../inc/Webserv.hpp"
+#include "main.hpp"
 
 int Config::_availableConnections = 220;
 
@@ -61,7 +61,7 @@ int Config::getMaxFds(void) {
 void Config::addFd(int fd) {
     std::pair<std::set<int>::iterator, bool> ret = activeFds.insert(fd);
     if (ret.second == false)
-        NOCLASSLOGPRINT(LOGERROR, ("Config::addFd() : FD " + std::to_string(fd) + " already exists in the activeFds. Bad things will happen !"));
+        NOCLASSLOGPRINT(LOGERROR, ("Config::addFd() : FD " + ft::to_string(fd) + " already exists in the activeFds. Bad things will happen !"));
 }
 
 void Config::removeFd(int fd) {
@@ -81,27 +81,27 @@ void Config::showFDSETS() {
 
     for (; it != activeFds.end(); it++) {
         if (FD_ISSET(*it, &gConfig.readSet)) {
-            tmp += std::to_string(*it) + " - ";
+            tmp += ft::to_string(*it) + " - ";
             x++;
         }
     }
     if (x)
         tmp = tmp.substr(0, tmp.size() - 3);
 
-    NOCLASSLOGPRINT(INFO, ("Config::showFDSETS() : Inside gConfig.readSet, " + std::to_string(x) + " sockets [" + tmp + "] are watched on their read status"));
+    NOCLASSLOGPRINT(INFO, ("Config::showFDSETS() : Inside gConfig.readSet, " + ft::to_string(x) + " sockets [" + tmp + "] are watched on their read status"));
    
     x = 0;
     tmp.clear();
     it = activeFds.begin();
     for (; it != activeFds.end(); it++) {
         if (FD_ISSET(*it, &gConfig.writeSet)) {
-            tmp += (std::to_string(*it) + " - ");
+            tmp += (ft::to_string(*it) + " - ");
             x++;
         }
     }
     if (x)
         tmp = tmp.substr(0, tmp.size() - 3);
 
-    NOCLASSLOGPRINT(INFO, ("Config::showFDSETS() : Inside gConfig.writeSet, " + std::to_string(x) + " sockets [" + tmp + "] are watched on their write status"));
+    NOCLASSLOGPRINT(INFO, ("Config::showFDSETS() : Inside gConfig.writeSet, " + ft::to_string(x) + " sockets [" + tmp + "] are watched on their write status"));
 
 }

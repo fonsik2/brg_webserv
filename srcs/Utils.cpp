@@ -1,4 +1,4 @@
-#include "../inc/Webserv.hpp"
+#include "main.hpp"
 
 namespace ft {
 
@@ -134,7 +134,7 @@ namespace ft {
 		std::string 	date;
 
 		gettimeofday(&tv, &tz);
-		strptime(std::to_string(tv.tv_sec).c_str(), "%s", &time);
+		strptime(ft::to_string(tv.tv_sec).c_str(), "%s", &time);
 		strftime(buffer, sizeof(buffer), "%a, %d %b %Y %H:%M:%S CEST", &time);
 		date = buffer;
 		return (date);
@@ -148,7 +148,7 @@ namespace ft {
 		char 			buffer[1000];
 
 		stat(file.c_str(), &info);
-		sec = std::to_string(info.st_mtime).c_str();
+		sec = ft::to_string(info.st_mtime).c_str();
 		strptime(sec.c_str(), "%s", &time);
 		strftime(buffer, sizeof(buffer), "%a, %d %b %Y %H:%M:%S CEST", &time);
 		date = buffer;
@@ -209,6 +209,12 @@ namespace ft {
 			}
 		}
 		return (-1);
+	}
+
+	std::string to_string(int num) {
+		std::stringstream ss;
+		ss << num;
+		return ss.str();
 	}
 }
 
@@ -273,13 +279,13 @@ namespace utils
 		std::cout << std::endl;
 	}
 
-	int strHexaToDecimal(std::string strHexa) {    
+	int strHexaToDecimal(std::string strHexa) {	
 
 		int ret = 0; 
 		int base = 1; 
 		int size = strHexa.size(); 
 
-		for (int i = size - 1; i >= 0; --i) {    
+		for (int i = size - 1; i >= 0; --i) {	
 			if (strHexa[i] >= '0' && strHexa[i] <= '9') { 
 				ret += (strHexa[i] - 48) * base;
 				base = base * 16; 
@@ -309,7 +315,6 @@ namespace utils
 			return (1);
 		return (0);
 	}
-
 }
 
 namespace responseUtils
@@ -367,15 +372,15 @@ namespace responseUtils
 
 	int setupBytesArray(Response *res)
 	{
-        struct stat fileStat;
-//        int retStat;
+		struct stat fileStat;
+//		int retStat;
 
 		if (res->_resBody)
 			free(res->_resBody);
-        /*retStat = */stat(res->_resFile.c_str(), &fileStat);
-        if (!(res->_resBody = (char*)malloc(sizeof(char) * fileStat.st_size)))
+		/*retStat = */stat(res->_resFile.c_str(), &fileStat);
+		if (!(res->_resBody = (char*)malloc(sizeof(char) * fileStat.st_size)))
 		{
-            LOGPRINT(LOGERROR, res, ("Response::setBody() : allocation body failed"));
+			LOGPRINT(LOGERROR, res, ("Response::setBody() : allocation body failed"));
 			return (-1);
 		}
 		return (0);
@@ -402,13 +407,13 @@ namespace responseUtils
 
 	std::string getReasonPhrase(int code) {
 
-	    std::map<int, std::string> reasonMap;
+		std::map<int, std::string> reasonMap;
 
 		if (code < 200 || code > 500) {
-	        NOCLASSLOGPRINT(LOGERROR, "utils::getReasonPhrase() : Anormal status code ---> no reason phrase match");
+			NOCLASSLOGPRINT(LOGERROR, "utils::getReasonPhrase() : Anormal status code ---> no reason phrase match");
 			code = 500;
 		}
-    
+	
 		reasonMap[200] = "OK";
 		reasonMap[201] = "Created";
 		reasonMap[202] = "Accepted";
@@ -434,7 +439,7 @@ namespace responseUtils
 			return ;
 		respStr.append(key);
 		respStr.append(": ");
-		respStr.append(std::to_string(value));
+		respStr.append(ft::to_string(value));
 		respStr.append("\r\n");
 	}
 
