@@ -136,7 +136,7 @@ std::string	Conf::parseLocation(Server *serv, std::string locs) {
 				{
 					if (line.size() != 2 || !ft::isNumber(line[1]))
 						return ("in server port " + ft::to_string(serv->port) + ": max_body syntax.");
-					max_body = std::atoi(*line[1].c_str());
+					max_body = std::atoi(line[1].c_str());
 				}
 				else if (line[0] == "autoindex")
 				{
@@ -203,7 +203,7 @@ std::string	Conf::parseServerBlock(std::string block)
 		{
 			if (line.size() != 2 || !ft::isNumber(line[1]))
 				return ("port syntax.");
-			port = std::atoi(*line[1].c_str());
+			port = std::atoi(line[1].c_str());
 			if (port <= 1024)
 				return ("port must be over 1024.");
 		}

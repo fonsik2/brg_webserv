@@ -268,7 +268,7 @@ void Request::fillMultiWeightValHeaders(std::string const key, std::string const
 void Request::fillUniqueValHeaders(std::string const key, std::string const value)  {
 
 	if (key == "Keep-Alive") keepAlive = value;
-	else if (key == "Content-Length") contentLength = *value.c_str();
+	else if (key == "Content-Length") contentLength = std::atoi(value.c_str());
 	else if (key == "Content-Type" || key == "Content-type") contentType = value;
 	else if (key == "Authorization") authorization = value;
 	else if (key == "Date") date = value;
